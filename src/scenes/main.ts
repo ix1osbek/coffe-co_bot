@@ -53,7 +53,7 @@ mainScene.wait("main").setup((scene) => {
       const text =
         `👤 <b>Ismingiz:</b> ${user.name}\n\n` +
         `📞 <b>Telefon raqamingiz:</b> ${user.phone}\n\n` +
-        `💰 <b>Keshbek mablag'ingiz:</b> ${formatCurrency(user.total_points)}`;
+        `💰 <b>Keshbek balansingiz:</b> ${formatCurrency(user.total_points)}`;
 
       await ctx.reply(text, { parse_mode: "HTML" });
     } catch (error) {
