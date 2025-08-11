@@ -9,7 +9,7 @@ class CronService {
   constructor() {}
 
   private async callback() {
-    const users = await User.find({});
+    const users = await User.find({})
 
     let updatedUsers = 0;
 
