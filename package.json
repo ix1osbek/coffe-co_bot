@@ -1,0 +1,40 @@
+{
+  "name": "coffee-shop-bot",
+  "version": "1.0.0",
+  "description": "Coffee shop telegram bot",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "nodemon src/index.ts",
+    "start:prod": "tsc && pm2 start ecosystem.config.json && pm2 logs",
+    "restart:prod": "tsc && pm2 restart ecosystem.config.json && pm2 logs",
+    "stop:prod": "pm2 stop ecosystem.config.json && pm2 logs",
+    "delete:prod": "pm2 delete ecosystem.config.json",
+    "logs": "pm2 logs",
+    "monitor": "pm2 monit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuldoshevuz/coffee-shop-bot.git"
+  },
+  "author": "Muhammadali <mukhammadaliweb@gmail.com | t.me/yuldoshev_uz | http://yuldoshev.uz>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yuldoshevuz/coffee-shop-bot/issues"
+  },
+  "homepage": "https://github.com/yuldoshevuz/coffee-shop-bot#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "pm2": "^6.0.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cron": "^4.3.3",
+    "dotenv": "^17.2.1",
+    "grammy": "^1.37.0",
+    "grammy-scenes": "^10.2.0",
+    "mongoose": "^8.17.1"
+  }
+}
