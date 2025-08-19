@@ -3,7 +3,7 @@ import { KEYBOARDS } from "./keyboards";
 export enum MESSAGES {
   START = "<b>Assalomu alaykum! 🙌\n\n☕️ “Coffee.Co” ning rasmiy botiga xush kelibsiz!</b>",
   MENU = "🏠 Bosh menyu",
-  ASK_FULL_NAME = "Salom, iltimos ismingizni kiriting",
+  ASK_FULL_NAME = "Salom, iltimos ismingiz va familiyangizni kiriting",
   ASK_PHONE_NUMBER = `Juda soz, endi esa "${KEYBOARDS.SEND_CONTACT}" tugmasini bosib telefon raqamingizni yuboring`,
   MUST_USE_TELEGRAM = "Siz botga murojaat qilish uchun Telegramdan foydalanishingiz kerak!",
   ABOUT_US = "<b>Filiallarimiz:</b>\n\n📍 Kichik xalqa yo'li, 13\n\n⏰ Ish vaqti: Du-Yak 07:00 - 01:00 gacha\n\n ☎️ Kontaktlar: +998(33)-888-78-81",

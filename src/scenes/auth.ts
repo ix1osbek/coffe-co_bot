@@ -16,77 +16,83 @@ export const authScene = new Scene<MyContext, AuthSession>(SCENES.AUTH);
 authScene.label("askName");
 
 authScene.step(async (ctx) => {
-  await ctx.reply(MESSAGES.ASK_FULL_NAME, {
-    reply_markup: { remove_keyboard: true },
-  });
+    await ctx.reply(MESSAGES.ASK_FULL_NAME, {
+        reply_markup: { remove_keyboard: true },
+    });
 });
 
 authScene.wait("name").on("message:text", async (ctx) => {
-  try {
-    const name = formatHTML(ctx.message.text);
+    try {
 
-    ctx.scene.session = { name };
+        const text = ctx.message.text;
+        if (text.startsWith("/")) {
+            await ctx.reply("Salom, iltimos ismingiz va familiyangizni kiriting");
+            return;
+        }
+        const name = formatHTML(text);
 
-    ctx.scene.resume();
-  } catch (error) {
-    handleError(error as Error | GrammyError, ctx);
-  }
+        ctx.scene.session = { name };
+
+        ctx.scene.resume();
+    } catch (error) {
+        handleError(error as Error | GrammyError, ctx);
+    }
 });
 
 authScene.label("askPhone");
 
 authScene.step(async (ctx) => {
-  await ctx.reply(MESSAGES.ASK_PHONE_NUMBER, {
-    reply_markup: sendContactKeyboard(),
-  });
+    await ctx.reply(MESSAGES.ASK_PHONE_NUMBER, {
+        reply_markup: sendContactKeyboard(),
+    });
 });
 
 authScene.wait("phone").setup((scene) => {
-  scene.on("message:contact", async (ctx) => {
-    const contact = ctx.message.contact;
+    scene.on("message:contact", async (ctx) => {
+        const contact = ctx.message.contact;
 
-    if (!contact.phone_number.startsWith("+")) {
-      contact.phone_number = `+${contact.phone_number}`;
-    }
+        if (!contact.phone_number.startsWith("+")) {
+            contact.phone_number = `+${contact.phone_number}`;
+        }
 
-    ctx.scene.session.phone = contact.phone_number;
+        ctx.scene.session.phone = contact.phone_number;
 
-    const { name, phone } = ctx.scene.session;
+        const { name, phone } = ctx.scene.session;
 
-    const user = await User.findOne({ phone });
+        const user = await User.findOne({ phone });
 
-    if (user) {
-      ctx.session.user = user;
+        if (user) {
+            ctx.session.user = user;
 
-      ctx.scene.enter(SCENES.MAIN);
+            ctx.scene.enter(SCENES.MAIN);
 
-      return;
-    }
+            return;
+        }
 
-    try {
-      const customer = await loyverseService.upsertCustomer({
-        name: name || "",
-        phone_number: phone,
-        total_points: 0,
-      });
+        try {
+            const customer = await loyverseService.upsertCustomer({
+                name: name || "",
+                phone_number: phone,
+                total_points: 0,
+            });
 
-      const newUser = await User.create({
-        name,
-        phone,
-        chat_id: ctx.chat.id,
-        username: ctx.chat.username,
-        customer_id: customer.id,
-      });
+            const newUser = await User.create({
+                name,
+                phone,
+                chat_id: ctx.chat.id,
+                username: ctx.chat.username,
+                customer_id: customer.id,
+            });
 
-      ctx.session.user = newUser;
+            ctx.session.user = newUser;
 
-      ctx.scene.enter(SCENES.MAIN);
-    } catch (error) {
-      handleError(error as Error | GrammyError, ctx);
+            ctx.scene.enter(SCENES.MAIN);
+        } catch (error) {
+            handleError(error as Error | GrammyError, ctx);
 
-      await ctx.reply(MESSAGES.ERROR_CREATING_CUSTOMER);
-    }
-  });
+            await ctx.reply(MESSAGES.ERROR_CREATING_CUSTOMER);
+        }
+    });
 
-  scene.hears(KEYBOARDS.BACK, async (ctx) => ctx.scene.goto("askName"));
+    scene.hears(KEYBOARDS.BACK, async (ctx) => ctx.scene.goto("askName"));
 });
