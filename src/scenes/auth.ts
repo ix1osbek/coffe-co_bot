@@ -30,7 +30,7 @@ authScene.wait("name").on("message:text", async (ctx) => {
             await ctx.reply(MESSAGES.ASK_FULL_NAME);
             return;
         }
-        
+
         const name = formatHTML(text);
 
         ctx.scene.session = { name };
@@ -84,6 +84,7 @@ authScene.wait("phone").setup((scene) => {
                 chat_id: ctx.chat.id,
                 username: ctx.chat.username,
                 customer_id: customer.id,
+                total_points: customer.total_points
             });
 
             ctx.session.user = newUser;
