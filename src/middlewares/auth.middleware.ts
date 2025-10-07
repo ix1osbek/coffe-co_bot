@@ -13,11 +13,11 @@ export const auth = async (ctx: MyContext, next: NextFunction) => {
       return;
     }
 
-    if (ctx.session.user) {
-      next();
+    // if (ctx.session.user) {
+    //   next();
 
-      return;
-    }
+    //   return;
+    // }
 
     const user = await User.findOne({ chat_id: ctx.from.id });
 
