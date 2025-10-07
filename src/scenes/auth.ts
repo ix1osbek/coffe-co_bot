@@ -25,10 +25,12 @@ authScene.wait("name").on("message:text", async (ctx) => {
     try {
 
         const text = ctx.message.text;
-        if (text.startsWith("/")) {
-            await ctx.reply("Salom, iltimos ismingiz va familiyangizni kiriting");
+
+        if (text === "/start") {
+            await ctx.reply(MESSAGES.ASK_FULL_NAME);
             return;
         }
+        
         const name = formatHTML(text);
 
         ctx.scene.session = { name };
